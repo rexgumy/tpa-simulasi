@@ -81,6 +81,13 @@ button:focus-visible, .nav-grid__btn:focus-visible {
   margin-bottom: 18px;
 }
 
+.landing-logo {
+  display: block;
+  width: 140px;
+  max-width: 60%;
+  margin: 0 auto 24px;
+}
+
 .landing-title {
   font-family: var(--font-display);
   font-weight: 800;
