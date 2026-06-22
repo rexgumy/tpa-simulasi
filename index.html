@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TPA Simulasi — Latihan Tes Potensi Akademik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ LANDING SCREEN ============ -->
+<section id="screen-landing" class="screen active">
+  <div class="gauge-deco gauge-deco--1" aria-hidden="true"></div>
+  <div class="gauge-deco gauge-deco--2" aria-hidden="true"></div>
+
+  <div class="landing-wrap">
+    <div class="eyebrow">Latihan Mandiri · Tema Energi</div>
+    <h1 class="landing-title">TPA Simulasi<br><span class="accent">Tes Potensi Akademik</span></h1>
+    <p class="landing-sub">Latihan soal TPA bergaya seleksi magang perusahaan energi. Dikerjakan dengan waktu terbatas, 8 subtes, level HOTS.</p>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-num">100</div>
+        <div class="stat-label">Soal</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">60<span class="stat-unit">'</span></div>
+        <div class="stat-label">Menit</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">8</div>
+        <div class="stat-label">Subtes</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">HOTS</div>
+        <div class="stat-label">Level</div>
+      </div>
+    </div>
+
+    <div class="subtest-list">
+      <span class="subtest-pill">Deret Angka</span>
+      <span class="subtest-pill">Matematika Dasar</span>
+      <span class="subtest-pill">Spasial</span>
+      <span class="subtest-pill">Sinonim</span>
+      <span class="subtest-pill">Antonim</span>
+      <span class="subtest-pill">Analogi</span>
+      <span class="subtest-pill">Bahasa Inggris</span>
+      <span class="subtest-pill">Computer Literacy</span>
+    </div>
+
+    <button id="btn-start" class="btn-primary">Mulai Simulasi</button>
+    <p class="disclaimer">Situs latihan mandiri, dibuat untuk simulasi tes — bukan situs resmi perusahaan manapun.</p>
+  </div>
+</section>
+
+<!-- ============ EXAM SCREEN ============ -->
+<section id="screen-exam" class="screen">
+  <header class="exam-bar">
+    <div class="exam-bar__left">
+      <span class="exam-bar__title">Simulasi TPA</span>
+      <span class="exam-bar__progress" id="progress-label">Soal 0/100</span>
+    </div>
+
+    <div class="gauge" id="gauge">
+      <svg viewBox="0 0 120 120" class="gauge__svg">
+        <circle cx="60" cy="60" r="52" class="gauge__track"></circle>
+        <circle cx="60" cy="60" r="52" class="gauge__fill" id="gauge-fill"></circle>
+      </svg>
+      <div class="gauge__readout" id="time-readout">60:00</div>
+    </div>
+
+    <div class="exam-bar__right">
+      <button id="btn-navigator" class="btn-ghost">☷ Navigasi</button>
+      <button id="btn-submit" class="btn-danger">Submit Ujian</button>
+    </div>
+  </header>
+
+  <main class="exam-main">
+    <div class="question-card">
+      <div class="question-meta">
+        <span class="question-tag" id="subtest-tag">Subtest</span>
+        <span class="question-num" id="question-num">Soal #1</span>
+      </div>
+      <p class="question-text" id="question-text">Teks soal akan muncul di sini.</p>
+      <div class="options" id="options-list"></div>
+    </div>
+  </main>
+
+  <footer class="exam-footer">
+    <button id="btn-prev" class="btn-secondary">← Sebelumnya</button>
+    <div class="exam-footer__dots" id="footer-status"></div>
+    <button id="btn-next" class="btn-secondary">Selanjutnya →</button>
+  </footer>
+
+  <!-- Navigator modal -->
+  <div id="navigator-modal" class="modal">
+    <div class="modal__panel">
+      <div class="modal__head">
+        <span>Nomor Soal</span>
+        <button id="btn-close-nav" class="modal__close">✕ Tutup</button>
+      </div>
+      <div class="modal__legend">
+        <span><i class="dot dot--answered"></i> Sudah dijawab</span>
+        <span><i class="dot dot--current"></i> Soal aktif</span>
+        <span><i class="dot dot--empty"></i> Belum dijawab</span>
+      </div>
+      <div class="nav-grid" id="nav-grid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESULT SCREEN ============ -->
+<section id="screen-result" class="screen">
+  <div class="result-wrap">
+    <div class="eyebrow">Hasil Simulasi</div>
+    <h2 class="result-title">Ringkasan Skor Kamu</h2>
+
+    <div class="result-score">
+      <div class="result-score__num" id="result-percent">0%</div>
+      <div class="result-score__detail" id="result-detail">0 dari 100 soal benar</div>
+    </div>
+
+    <div class="result-breakdown" id="result-breakdown"></div>
+
+    <div class="result-actions">
+      <button id="btn-restart" class="btn-primary">Ulangi Simulasi</button>
+    </div>
+  </div>
+</section>
+
+<script src="questions.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
