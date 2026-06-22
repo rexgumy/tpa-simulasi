@@ -2,7 +2,6 @@
 // STATE
 // ============================================================
 const TOTAL_SECONDS = 60 * 60; // 60 menit
-const GAUGE_CIRCUMFERENCE = 326.7; // 2 * PI * r(52)
 
 let currentIndex = 0;
 let answers = new Array(QUESTIONS.length).fill(null); // null = belum dijawab, else = index opsi
@@ -31,9 +30,9 @@ const optionsList = document.getElementById("options-list");
 const progressLabel = document.getElementById("progress-label");
 const footerStatus = document.getElementById("footer-status");
 const timeReadout = document.getElementById("time-readout");
-const gaugeFill = document.getElementById("gauge-fill");
+const timerBox = document.querySelector(".timer-box");
 const navigatorModal = document.getElementById("navigator-modal");
-const navGrid = document.getElementById("nav-grid");
+const navGridGrouped = document.getElementById("nav-grid-grouped");
 
 // ============================================================
 // NAVIGATION BETWEEN SCREENS
@@ -79,13 +78,11 @@ function updateTimerDisplay() {
   timeReadout.textContent = `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
 
   const ratio = secondsLeft / TOTAL_SECONDS;
-  const offset = GAUGE_CIRCUMFERENCE * (1 - ratio);
-  gaugeFill.style.strokeDashoffset = offset;
-
+  timerBox.classList.remove("warning", "danger");
   if (ratio < 0.1) {
-    gaugeFill.style.stroke = "var(--red)";
+    timerBox.classList.add("danger");
   } else if (ratio < 0.3) {
-    gaugeFill.style.stroke = "#E8862F";
+    timerBox.classList.add("warning");
   }
 }
 
@@ -179,24 +176,47 @@ navigatorModal.addEventListener("click", (e) => {
 });
 
 function buildNavGrid() {
-  navGrid.innerHTML = "";
-  QUESTIONS.forEach((q, i) => {
-    const btn = document.createElement("button");
-    btn.className = "nav-grid__btn";
-    btn.textContent = i + 1;
-    btn.addEventListener("click", () => {
-      currentIndex = i;
-      renderQuestion();
-      navigatorModal.classList.remove("open");
+  navGridGrouped.innerHTML = "";
+
+  SUBTEST_ORDER.forEach(subtest => {
+    const indices = QUESTIONS
+      .map((q, i) => ({ q, i }))
+      .filter(item => item.q.subtest === subtest)
+      .map(item => item.i);
+
+    const group = document.createElement("div");
+    group.className = "nav-group";
+
+    const label = document.createElement("div");
+    label.className = "nav-group__label";
+    label.textContent = subtest;
+    group.appendChild(label);
+
+    const grid = document.createElement("div");
+    grid.className = "nav-grid";
+    indices.forEach(i => {
+      const btn = document.createElement("button");
+      btn.className = "nav-grid__btn";
+      btn.dataset.index = i;
+      btn.textContent = i + 1;
+      btn.addEventListener("click", () => {
+        currentIndex = i;
+        renderQuestion();
+        navigatorModal.classList.remove("open");
+      });
+      grid.appendChild(btn);
     });
-    navGrid.appendChild(btn);
+    group.appendChild(grid);
+    navGridGrouped.appendChild(group);
   });
+
   updateNavGrid();
 }
 
 function updateNavGrid() {
-  const btns = navGrid.querySelectorAll(".nav-grid__btn");
-  btns.forEach((btn, i) => {
+  const btns = navGridGrouped.querySelectorAll(".nav-grid__btn");
+  btns.forEach(btn => {
+    const i = Number(btn.dataset.index);
     btn.classList.remove("answered", "current");
     if (i === currentIndex) {
       btn.classList.add("current");
